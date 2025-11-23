@@ -1,6 +1,5 @@
 # **Flight Booking Application**
-This project is a Flight Booking System built using Spring Boot + MongoDB
-Users can search flights, book tickets, view booking history, and cancel bookings.
+This project is a Flight Booking System built using Spring Boot + MongoDB. Users can search flights, book tickets, view booking history, and cancel bookings.
 Admins can manage airlines and flight inventory.
 
 ## 1. Project Overview
