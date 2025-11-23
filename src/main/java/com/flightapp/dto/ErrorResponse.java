@@ -1,7 +1,6 @@
 package com.flightapp.dto;
 
 import lombok.*;
-import org.springframework.http.HttpStatus;
 
 @Data
 @NoArgsConstructor

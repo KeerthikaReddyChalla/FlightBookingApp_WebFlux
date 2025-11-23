@@ -7,7 +7,6 @@ import com.flightapp.exception.ResourceNotFoundException;
 import com.flightapp.model.*;
 import com.flightapp.repository.BookingRepository;
 import com.flightapp.repository.InventoryRepository;
-import com.flightapp.util.BookingMapper;
 import com.flightapp.util.PNRGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

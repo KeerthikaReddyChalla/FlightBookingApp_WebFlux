@@ -3,7 +3,6 @@ package com.flightapp.controller;
 import com.flightapp.dto.BookingRequest;
 import com.flightapp.dto.BookingResponse;
 import com.flightapp.dto.CancelResponse;
-import com.flightapp.model.Booking;
 import com.flightapp.service.BookingService;
 import com.flightapp.util.BookingMapper;
 import jakarta.validation.Valid;

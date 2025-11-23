@@ -1,7 +1,6 @@
 package com.flightapp.dto;
 
-import com.flightapp.model.Gender;
-import com.flightapp.model.MealType;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;

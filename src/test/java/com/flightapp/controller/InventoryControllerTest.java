@@ -2,7 +2,6 @@ package com.flightapp.controller;
 
 import com.flightapp.BaseTestConfig;
 import com.flightapp.TestSecurityConfig;
-import com.flightapp.dto.AddInventoryRequest;
 import com.flightapp.exception.ResourceNotFoundException;
 import com.flightapp.model.Inventory;
 import com.flightapp.model.TripType;

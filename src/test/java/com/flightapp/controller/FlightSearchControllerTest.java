@@ -3,7 +3,6 @@ package com.flightapp.controller;
 import com.flightapp.BaseTestConfig;
 import com.flightapp.TestSecurityConfig;
 import com.flightapp.dto.FlightSearchResponse;
-import com.flightapp.dto.SearchFlightRequest;
 import com.flightapp.model.TripType;
 import com.flightapp.service.FlightSearchService;
 
