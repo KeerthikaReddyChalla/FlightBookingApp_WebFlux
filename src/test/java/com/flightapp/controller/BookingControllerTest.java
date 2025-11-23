@@ -1,14 +1,17 @@
 package com.flightapp.controller;
 
 import com.flightapp.BaseTestConfig;
-import com.flightapp.dto.BookingRequest;
+import com.flightapp.TestSecurityConfig;
 import com.flightapp.dto.CancelResponse;
 import com.flightapp.model.*;
 import com.flightapp.service.BookingService;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
@@ -17,6 +20,8 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
+@WebFluxTest(BookingController.class)
+@Import(TestSecurityConfig.class)
 class BookingControllerTest extends BaseTestConfig {
 
     @MockBean
@@ -32,10 +37,16 @@ class BookingControllerTest extends BaseTestConfig {
                 .email("keer@example.com")
                 .bookingDateTime(LocalDateTime.now())
                 .journeyDateTime(LocalDateTime.now().plusDays(5))
-                .numberOfSeats(2)
-                .totalPrice(8000)
+                .numberOfSeats(1)
+                .totalPrice(4000)
                 .passengers(List.of(
-                        Passenger.builder().name("A").age(22).gender(Gender.FEMALE).seatNumber("1A").mealType(MealType.VEG).build()
+                        Passenger.builder()
+                                .name("A")
+                                .age(22)
+                                .gender(Gender.FEMALE)
+                                .seatNumber("1A")
+                                .mealType(MealType.VEG)
+                                .build()
                 ))
                 .cancelled(false)
                 .build();
@@ -67,7 +78,10 @@ class BookingControllerTest extends BaseTestConfig {
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody()
-                .jsonPath("$.pnr").isEqualTo("PNR12345");
+                .jsonPath("$.pnr").isEqualTo("PNR12345")
+                .jsonPath("$.flightId").isEqualTo("F001")
+                .jsonPath("$.userName").isEqualTo("Keerthika")
+                .jsonPath("$.email").isEqualTo("keer@example.com");
     }
 
     @Test
@@ -88,10 +102,14 @@ class BookingControllerTest extends BaseTestConfig {
 
         webTestClient.get()
                 .uri("/api/flight/ticket/PNR12345")
+                .accept(APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
-                .jsonPath("$.pnr").isEqualTo("PNR12345");
+                .jsonPath("$.pnr").isEqualTo("PNR12345")
+                .jsonPath("$.flightId").isEqualTo("F001")
+                .jsonPath("$.userName").isEqualTo("Keerthika")
+                .jsonPath("$.email").isEqualTo("k@example.com");
     }
 
     @Test
@@ -110,6 +128,7 @@ class BookingControllerTest extends BaseTestConfig {
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
+                .jsonPath("$.pnr").isEqualTo("PNR12345")
                 .jsonPath("$.message").isEqualTo("Ticket cancelled successfully");
     }
 }

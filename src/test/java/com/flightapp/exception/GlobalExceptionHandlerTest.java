@@ -62,19 +62,27 @@ class GlobalExceptionHandlerTest {
     @Test
     void testValidationError() {
 
-        var target = new Object();
-        var errors = new BeanPropertyBindingResult(target, "obj");
+        class Dummy {
+            private String field;
+            public String getField() { return field; }
+            public void setField(String field) { this.field = field; }
+        }
+
+        Dummy target = new Dummy();
+        var errors = new BeanPropertyBindingResult(target, "dummy");
+
         errors.rejectValue("field", "invalid", "Field is invalid");
 
         WebExchangeBindException ex = new WebExchangeBindException(null, errors);
 
-        Mono<ErrorResponse> respMono = handler.handleValidationErrors(ex, exchange);
+        Mono<ErrorResponse> mono = handler.handleValidationErrors(ex, exchange);
 
-        ErrorResponse resp = respMono.block();
+        ErrorResponse resp = mono.block();
 
         assertEquals("Field is invalid", resp.getMessage());
         assertEquals(400, resp.getStatus());
     }
+
 
     @Test
     void testGenericException() {

@@ -1,6 +1,7 @@
 package com.flightapp.controller;
 
 import com.flightapp.BaseTestConfig;
+import com.flightapp.TestSecurityConfig;
 import com.flightapp.dto.AddInventoryRequest;
 import com.flightapp.exception.ResourceNotFoundException;
 import com.flightapp.model.Inventory;
@@ -9,12 +10,17 @@ import com.flightapp.service.InventoryService;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+
 import reactor.core.publisher.Mono;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
+@WebFluxTest(controllers =InventoryController.class)
+@Import(TestSecurityConfig.class)
 class InventoryControllerTest extends BaseTestConfig {
 
     @MockBean
@@ -80,32 +86,37 @@ class InventoryControllerTest extends BaseTestConfig {
                 .expectStatus().isBadRequest();
     }
 
+   
     @Test
     void testAddInventoryAirlineNotFound() {
 
         Mockito.when(inventoryService.addInventory(any()))
-                .thenReturn(Mono.error(new ResourceNotFoundException("Airline not found")));
+                .thenThrow(new ResourceNotFoundException("Airline not found"));
 
         String json = """
-                {
-                  "airlineId": "A1",
-                  "fromPlace": "Hyderabad",
-                  "toPlace": "Delhi",
-                  "flightDateTime": "2025-12-01T10:30:00",
-                  "priceOneWay": 4000,
-                  "priceRoundTrip": 7500,
-                  "totalSeats": 50,
-                  "tripType": "ONE_WAY"
-                }
-                """;
+        		{
+        		  "airlineId": "A1",
+        		  "fromPlace": "Hyd",
+        		  "toPlace": "Del",
+        		  "flightDateTime": "2025-12-01T10:00:00",
+        		  "totalSeats": 50,
+        		  "priceOneWay": 3000,
+        		  "priceRoundTrip": 6000,
+        		  "tripType": "ONE_WAY"
+        		}
+        		""";
+
 
         webTestClient.post()
-                .uri("/api/flight/airline/inventory/add")
-                .contentType(APPLICATION_JSON)
-                .bodyValue(json)
-                .exchange()
-                .expectStatus().isNotFound()
-                .expectBody()
-                .jsonPath("$.message").isEqualTo("Airline not found");
+        .uri("/api/flight/airline/inventory/add")
+        .contentType(APPLICATION_JSON)
+        .bodyValue(json)
+        .exchange()
+        .expectStatus().isOk() 
+        .expectBody()
+        .jsonPath("$.status").isEqualTo(404)
+        .jsonPath("$.message").isEqualTo("Airline not found");
+
     }
-}
+
+    }

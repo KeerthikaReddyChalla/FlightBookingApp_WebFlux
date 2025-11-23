@@ -1,6 +1,7 @@
 package com.flightapp.controller;
 
 import com.flightapp.BaseTestConfig;
+import com.flightapp.TestSecurityConfig;
 import com.flightapp.dto.FlightSearchResponse;
 import com.flightapp.dto.SearchFlightRequest;
 import com.flightapp.model.TripType;
@@ -8,12 +9,17 @@ import com.flightapp.service.FlightSearchService;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+
 import reactor.core.publisher.Flux;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
+@WebFluxTest(controllers =FlightSearchController.class)
+@Import(TestSecurityConfig.class)
 class FlightSearchControllerTest extends BaseTestConfig {
 
     @MockBean
