@@ -17,7 +17,7 @@ public class FlightMapper {
         return FlightSearchResponse.builder()
                 .flightId(inventory.getId())
                 .airlineName(airline.getAirlineName())
-                .airlineLogoUrl(airline.getAirlineLogoUrl())
+                .airlineUrl(airline.getAirlineUrl())
                 .fromPlace(inventory.getFromPlace())
                 .toPlace(inventory.getToPlace())
                 .flightDateTime(inventory.getFlightDateTime())
