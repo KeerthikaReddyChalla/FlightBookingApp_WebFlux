@@ -12,6 +12,7 @@
         <java.version>17</java.version>
         <spring.boot.version>3.2.5</spring.boot.version>
         <sonar.organization>keerthikareddychalla</sonar.organization>
+        <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <dependencyManagement>
